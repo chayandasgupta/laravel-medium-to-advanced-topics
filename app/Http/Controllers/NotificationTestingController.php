@@ -21,7 +21,7 @@ class NotificationTestingController extends Controller
         ];
 
         //first rule/first via
-        $user->notify( new TestingNotification($notificationData) );
+        //$user->notify( new TestingNotification($notificationData) );
         
         // notification send use notification facade
         Notification::send($user, new TestingNotification($notificationData));

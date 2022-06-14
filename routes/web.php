@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('test-notification', [App\Http\Controllers\NotificationTestingController::class, 'sendNotification']);
+Route::get('offer-notification', [App\Http\Controllers\NotificationTestingController::class, 'sendOfferNotification']);

@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TestingNotification extends Notification implements ShouldQueue
+class OfferNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    
-    private $notificationData;
+
+    private $offer;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($notifiableData)
-    {   
-        $this->notificationData = $notifiableData;
+    public function __construct($offerData)
+    {
+        $this->offer = $offerData;
     }
 
     /**
@@ -30,7 +30,7 @@ class TestingNotification extends Notification implements ShouldQueue
      * @return array
      */
     public function via($notifiable)
-    {   
+    {
         return ['mail', 'database'];
     }
 
@@ -43,27 +43,11 @@ class TestingNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->notificationData['body'])
-                    ->action($this->notificationData['notificationText'], $this->notificationData['url'])
-                    ->line($this->notificationData['thankyou']);
+                    ->subject('Hey, New offer is availabe')
+                    ->line($this->offer['body'])
+                    ->action($this->offer['offerText'], $this->offer['offerUrl'])
+                    ->line($this->offer['thanks']);
     }
-
-
-     /**
-     * Get the database representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * 
-     */
-    public function toDatabase($notifiable)
-    {
-        return [
-            'amount' => 1000,
-            'invoice_status' => 'Pay Now',
-            'date' => '20-02-22'
-        ];
-    }
-    
 
     /**
      * Get the array representation of the notification.
@@ -74,7 +58,7 @@ class TestingNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+            'offer_id' => $this->offer['offer_id']
         ];
     }
 }
